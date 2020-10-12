@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="Modelo.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="ModeloTargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Modelo" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="ModeloContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ConductorSet" EntityType="Modelo.Conductor" />
+          <EntitySet Name="VehiculoSet" EntityType="Modelo.Vehiculo" />
+          <EntitySet Name="TipoInfraccionSet" EntityType="Modelo.TipoInfraccion" />
+          <EntitySet Name="InfraccionSet" EntityType="Modelo.Infraccion" />
+          <AssociationSet Name="InfraccionVehiculo" Association="Modelo.InfraccionVehiculo">
+            <End Role="Infraccion" EntitySet="InfraccionSet" />
+            <End Role="Vehiculo" EntitySet="VehiculoSet" />
+          </AssociationSet>
+          <AssociationSet Name="InfraccionTipoInfraccion" Association="Modelo.InfraccionTipoInfraccion">
+            <End Role="Infraccion" EntitySet="InfraccionSet" />
+            <End Role="TipoInfraccion" EntitySet="TipoInfraccionSet" />
+          </AssociationSet>
+          <AssociationSet Name="InfraccionConductor" Association="Modelo.InfraccionConductor">
+            <End Role="Infraccion" EntitySet="InfraccionSet" />
+            <End Role="Conductor" EntitySet="ConductorSet" />
+          </AssociationSet>
+          <AssociationSet Name="ConductorVehiculo" Association="Modelo.ConductorVehiculo">
+            <End Role="Conductor" EntitySet="ConductorSet" />
+            <End Role="Vehiculo" EntitySet="VehiculoSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Conductor">
+          <Key>
+            <PropertyRef Name="DNI" />
+          </Key>
+          <Property Name="DNI" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" MaxLength="9" />
+          <Property Name="NombreApellidos" Type="String" Nullable="false" />
+          <Property Name="Puntos" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Infracciones" Relationship="Modelo.InfraccionConductor" FromRole="Conductor" ToRole="Infraccion" />
+          <NavigationProperty Name="VehiculoHabituales" Relationship="Modelo.ConductorVehiculo" FromRole="Conductor" ToRole="Vehiculo" />
+        </EntityType>
+        <EntityType Name="Vehiculo">
+          <Key>
+            <PropertyRef Name="Matricula" />
+          </Key>
+          <Property Name="Matricula" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" MaxLength="20" />
+          <Property Name="Marca" Type="String" Nullable="false" />
+          <Property Name="Modelo" Type="String" Nullable="false" />
+          <NavigationProperty Name="Infracciones" Relationship="Modelo.InfraccionVehiculo" FromRole="Vehiculo" ToRole="Infraccion" />
+          <NavigationProperty Name="ConductoresHabituales" Relationship="Modelo.ConductorVehiculo" FromRole="Vehiculo" ToRole="Conductor" />
+        </EntityType>
+        <EntityType Name="TipoInfraccion">
+          <Key>
+            <PropertyRef Name="Indentificador" />
+          </Key>
+          <Property Name="Indentificador" Type="String" Nullable="false" annotation:StoreGeneratedPattern="None" MaxLength="50" />
+          <Property Name="Descripcion" Type="String" Nullable="false" />
+          <Property Name="Puntos" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Infracciones" Relationship="Modelo.InfraccionTipoInfraccion" FromRole="TipoInfraccion" ToRole="Infraccion" />
+        </EntityType>
+        <EntityType Name="Infraccion">
+          <Key>
+            <PropertyRef Name="Identificador" />
+          </Key>
+          <Property Name="Identificador" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Vehiculo" Relationship="Modelo.InfraccionVehiculo" FromRole="Infraccion" ToRole="Vehiculo" />
+          <NavigationProperty Name="TipoInfraccion" Relationship="Modelo.InfraccionTipoInfraccion" FromRole="Infraccion" ToRole="TipoInfraccion" />
+          <NavigationProperty Name="Conductor" Relationship="Modelo.InfraccionConductor" FromRole="Infraccion" ToRole="Conductor" />
+        </EntityType>
+        <Association Name="InfraccionVehiculo">
+          <End Type="Modelo.Infraccion" Role="Infraccion" Multiplicity="*" />
+          <End Type="Modelo.Vehiculo" Role="Vehiculo" Multiplicity="1" />
+        </Association>
+        <Association Name="InfraccionTipoInfraccion">
+          <End Type="Modelo.Infraccion" Role="Infraccion" Multiplicity="*" />
+          <End Type="Modelo.TipoInfraccion" Role="TipoInfraccion" Multiplicity="1" />
+        </Association>
+        <Association Name="InfraccionConductor">
+          <End Type="Modelo.Infraccion" Role="Infraccion" Multiplicity="*" />
+          <End Type="Modelo.Conductor" Role="Conductor" Multiplicity="0..1" />
+        </Association>
+        <Association Name="ConductorVehiculo">
+          <End Type="Modelo.Conductor" Role="Conductor" Multiplicity="*" />
+          <End Type="Modelo.Vehiculo" Role="Vehiculo" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="Modelo" />
+        <Alias Key="Target" Value="Modelo.Store" />
+        <EntityContainerMapping CdmEntityContainer="ModeloContainer" StorageEntityContainer="ModeloTargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
