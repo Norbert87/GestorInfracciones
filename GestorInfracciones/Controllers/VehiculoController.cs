@@ -14,12 +14,18 @@ namespace GestorInfracciones.Controllers
     {
         private VehiculoRepository repository = new VehiculoRepository();
         // GET: api/Vehiculo
+        /// <summary>
+        /// Obtiene lista de vehículos
+        /// </summary>
         public List<Vehiculo> Get()
         {
             return repository.getAll();
         }
 
         // GET: api/Vehiculo/5
+        /// <summary>
+        /// Obtiene vehículo
+        /// </summary>
         [ResponseType(typeof(Vehiculo))]
         public IHttpActionResult Get(string id)
         {
@@ -31,6 +37,9 @@ namespace GestorInfracciones.Controllers
         }
 
         // POST: api/Vehiculo
+        /// <summary>
+        /// Registra nuevo vehículo
+        /// </summary>
         [ResponseType(typeof(Vehiculo))]
         public IHttpActionResult Post(Vehiculo vehiculo)
         {

@@ -17,6 +17,9 @@ namespace GestorInfracciones.Controllers
         private VehiculoRepository vehiculoRepository = new VehiculoRepository();
 
         // GET: api/ConductorHabitual/5
+        /// <summary>
+        /// Obtiene los conductores habituales para un vehículo
+        /// </summary>
         [ResponseType(typeof(List<Conductor>))]
         [Route("api/ConductorHabitual/{id}", Name = "getConductoresHabitualesByVehiculo")]
         [HttpGet]
@@ -31,6 +34,9 @@ namespace GestorInfracciones.Controllers
 
 
         // POST: api/ConductorHabitual
+        /// <summary>
+        /// Añade un conductor habitual a un vehículo
+        /// </summary>
         [ResponseType(typeof(List<Conductor>))]
         public IHttpActionResult Post(ConductorHabitual conductorHabitual)
         {
@@ -66,6 +72,44 @@ namespace GestorInfracciones.Controllers
             conductorHabitualRepository.add(conductor, vehiculo);
 
             return CreatedAtRoute("getConductoresHabitualesByVehiculo", new { id = vehiculo.Matricula }, conductorHabitualRepository.getByVehiculo(vehiculo)); 
+        }
+
+
+        // DELETE: api/ConductorHabitual
+        /// <summary>
+        /// Quita un conductor habitual de un vehículo
+        /// </summary>
+        [ResponseType(typeof(List<Conductor>))]
+        public IHttpActionResult Delete(ConductorHabitual conductorHabitual)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Conductor conductor = conductorRepository.getById(conductorHabitual.DNI);
+
+            if (conductor == null)
+            {
+                return BadRequest("No existe conductor");
+            }
+
+            Vehiculo vehiculo = vehiculoRepository.getById(conductorHabitual.Matricula);
+            if (vehiculo == null)
+            {
+                return BadRequest("No existe vehiculo");
+            }
+
+            if (conductorHabitualRepository.exists(conductor, vehiculo))
+            {
+                conductorHabitualRepository.remove(conductor, vehiculo);
+            }
+            else
+            {
+                return BadRequest("No se localiza ese conductor habitual para el vehículo dado");
+            }
+
+            return CreatedAtRoute("getConductoresHabitualesByVehiculo", new { id = vehiculo.Matricula }, conductorHabitualRepository.getByVehiculo(vehiculo));
         }
 
     }

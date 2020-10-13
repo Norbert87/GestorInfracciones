@@ -9,6 +9,8 @@ namespace GestorInfracciones.DAL
 {
     public class InfraccionRepository: JsonIORepository
     {
+        private ConductorRepository conductorRepository = new ConductorRepository();
+        private TipoInfraccionRepository tipoRepository = new TipoInfraccionRepository();
         public InfraccionRepository()
         {
             this.filePath = this.GetApplicationRoot() + "\\Data\\infracciones.json";
@@ -53,6 +55,7 @@ namespace GestorInfracciones.DAL
             List<Infraccion> infracciones = this.getAll();
             Infraccion oldinfraccion = infracciones.Where(i => i.Identificador == infraccion.Identificador).FirstOrDefault();
             infracciones.Remove(oldinfraccion);
+            
             infracciones.Add(infraccion);
             string json = JsonConvert.SerializeObject(infracciones);
             this.write(json);

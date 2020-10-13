@@ -24,6 +24,13 @@ namespace GestorInfracciones.DAL
             return JsonConvert.DeserializeObject<List<ConductorHabitual>>(json);
         }
 
+        public ConductorHabitual get(Conductor conductor, Vehiculo vehiculo)
+        {
+            List<ConductorHabitual> conductores = this.getAll();
+            return conductores.Where(c => c.DNI == conductor.DNI && c.Matricula == vehiculo.Matricula).ToList().FirstOrDefault();
+        }
+
+
         public void add(Conductor conductor, Vehiculo vehiculo)
         {
             List<ConductorHabitual> conductores = this.getAll();
@@ -31,6 +38,19 @@ namespace GestorInfracciones.DAL
             conductores.Add(conductorHabitual);
             string json = JsonConvert.SerializeObject(conductores);
             this.write(json);
+        }
+
+        public void remove(Conductor conductor, Vehiculo vehiculo)
+        {
+            List<ConductorHabitual> conductores = this.getAll();
+            ConductorHabitual conductorHabitual = conductores.Where(c => c.DNI == conductor.DNI && c.Matricula == vehiculo.Matricula).ToList().FirstOrDefault();
+            if (conductorHabitual != null)
+            {
+                conductores.Remove(conductorHabitual);
+                string json = JsonConvert.SerializeObject(conductores);
+                this.write(json);
+            }
+            
         }
 
         public bool exists(Conductor conductor, Vehiculo vehiculo)

@@ -14,12 +14,18 @@ namespace GestorInfracciones.Controllers
     {
         private TipoInfraccionRepository repository = new TipoInfraccionRepository();
         // GET: api/TipoInfraccion
+        /// <summary>
+        /// Obtiene la lista de tipos de infracción
+        /// </summary>
         public List<TipoInfraccion> Get()
         {
             return repository.getAll();
         }
 
         // GET: api/TipoInfraccion/5
+        /// <summary>
+        /// Obtiene datos de un tipo de infracción
+        /// </summary>
         [ResponseType(typeof(TipoInfraccion))]
         public IHttpActionResult Get(string id)
         {
@@ -31,6 +37,9 @@ namespace GestorInfracciones.Controllers
         }
 
         // POST: api/TipoInfraccion
+        /// <summary>
+        /// Registra un nuevo tipo de infracción
+        /// </summary>
         [ResponseType(typeof(TipoInfraccion))]
         public IHttpActionResult Post(TipoInfraccion tipoInfraccion)
         {
