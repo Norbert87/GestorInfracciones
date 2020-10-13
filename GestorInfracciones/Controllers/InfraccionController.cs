@@ -72,7 +72,7 @@ namespace GestorInfracciones.Controllers
 
         // POST: api/Infraccion
         /// <summary>
-        /// Registra una infracción Consideraciones: Si no se indica conductor, se buscará entre los conductores habituales. 
+        /// Registra una infracción Consideraciones: Si no se indica conductor, se buscará entre los conductores habituales del vehículo. 
         /// Si solo existe un conductor habitual se asignará automaticamente. Si existen varios, no se asignará)
         /// </summary>
         [ResponseType(typeof(Infraccion))]
@@ -122,7 +122,7 @@ namespace GestorInfracciones.Controllers
 
         // PUT: api/infraccion/{id}
         /// <summary>
-        /// Acutaliza una infracción Consideraciones: Si no se indica conductor, se buscará entre los conductores habituales. 
+        /// Actualiza una infracción Consideraciones: Si no se indica conductor, se buscará entre los conductores habituales del vehículo. 
         /// Si solo existe un conductor habitual se asignará automaticamente. Si existen varios, no se asignará)
         /// </summary>
         [ResponseType(typeof(Infraccion))]
@@ -178,7 +178,7 @@ namespace GestorInfracciones.Controllers
 
             repository.update(infraccion);
 
-            //Si existe un nuevo conductor asignamos acutalizamos puntos
+            //Si existe un nuevo conductor actualizamos puntos
             if (conductor!=null)
             {
                 conductor.Puntos -= tipo.Puntos;
